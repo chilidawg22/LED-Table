@@ -1,6 +1,7 @@
 #include <SoftwareSerial.h>
-#define endMarker   '\n'
 #define numChars    32
+
+char endMarker = '\n';
 char receivedChars[numChars];
 byte index = 0;
 bool newData = false;
@@ -20,13 +21,14 @@ void loop() {
     Serial.println(received);
     newData = false;
   }
+  Serial.println(receivedChars[0]);
 }
 
 void checkSerial(){
   char rc;
   
   while(hc06.available() > 0 && not newData){
-    rc = Serial.read();
+    rc = hc06.read();
     if(rc == endMarker){
       receivedChars[index] = '\0';
       index = 0;
