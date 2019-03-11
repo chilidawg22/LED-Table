@@ -6,6 +6,7 @@ char receivedChars[numChars];
 byte index = 0;
 bool newData = false;
 String received = "";
+char divide = ';';
 
 SoftwareSerial hc06(4, 2);
 
@@ -17,11 +18,12 @@ void setup() {
 }
 
 void loop() {
+  checkSerial();
   if(newData){
     Serial.println(received);
     newData = false;
+    receivedChars = 
   }
-  Serial.println(receivedChars[0]);
 }
 
 void checkSerial(){
@@ -40,4 +42,7 @@ void checkSerial(){
       index ++;
     }
   }
+}
+
+String[] cut(){
 }
