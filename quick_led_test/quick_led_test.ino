@@ -13,7 +13,7 @@ void setup() {
 void loop() {
     for(int i = 0 ; i<= NUM_LEDS - 1; i++){
 
-        leds[i] = CRGB(250, 0, 0);
+        leds[i] = CRGB(250, 250, 250);
        
       }
     FastLED.show();
