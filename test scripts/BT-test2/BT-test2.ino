@@ -1,23 +1,61 @@
-#include <SoftwareSerial.h>
+//#include <SoftwareSerial.h>
 
-SoftwareSerial hc06(4, 2);
+//SoftwareSerial hc06(4, 2);
+
+
+const char endMarker = '\n';
+const byte numChars = 32;
+
+char receivedBT[numChars];
+String BT;
+byte BTindex = 0;
+bool newBT = false;
 
 void setup(){
   //Initialize Serial Monitor
   Serial.begin(9600);
-  Serial.println("ENTER AT Commands:");
   //Initialize Bluetooth Serial Port
-  hc06.begin(9600);
+  Serial1.begin(9600);
+
+  Serial.println("ready");
 }
 
 void loop(){
-  //Write data from HC06 to Serial Monitor
-  if (hc06.available()){
-    Serial.write(hc06.read());
+  //parrot();  
+  checkBT();
+  
+  if(newBT){
+    Serial.println(BT);
+    newBT = false;
+  }
+  
+}
+
+void checkBT(){
+  char rc;
+  while(Serial1.available() && not newBT){
+      rc = Serial1.read();
+      if(rc == endMarker){
+        receivedBT[BTindex] = '\0';
+        BTindex = 0;
+        newBT = true;
+        BT = String(receivedBT);
+      }
+      else{
+        receivedBT[BTindex] = rc;
+        BTindex ++;
+      }
+  }
+}
+
+void parrot(){
+   //Write data from HC06 to Serial Monitor
+  if (Serial1.available()){
+    Serial.write(Serial1.read());
   }
   
   //Write from Serial Monitor to HC06
   if (Serial.available()){
-    hc06.write(Serial.read());
+    Serial1.write(Serial.read());
   }  
 }
